@@ -1,45 +1,62 @@
-const correctAnswers = ['B', 'A', 'A', 'B'];
+
 const form = document.querySelector('.quiz-form');
-let userAnswersScore = 0;
 const button = document.querySelector('.btn');
 const scoreParagraph = document.createElement('p');
+const finalsScoreContainer = document.querySelector('.final-score-container')
 
-form.addEventListener('submit', event => {
-    event.preventDefault();
-    const userAnswers = [
-        form.inputQuestion1.value,
-        form.inputQuestion2.value,
-        form.inputQuestion3.value,
-        form.inputQuestion4.value,
-    ];
+const correctAnswers = ['B', 'A', 'A', 'B'];
+let userAnswersScore = 0;
+
+const getUserAnswers = () => {
+    let userAnswers = [];
     
+    correctAnswers.forEach((_, index) => {
+        const userAnswer = form[`inputQuestion${index+1}`].value
+        userAnswers.push(userAnswer)
+    })    
+    
+    return userAnswers
+};
+
+const calculateUserScore = (userAnswers) => {
     userAnswers.forEach((userAnswer, index) => {
         const isCorrectAnswer = userAnswer === correctAnswers[index];
         if(isCorrectAnswer) {
             userAnswersScore += 25;            
-        };        
+        };           
     });
+}
 
-    const printScoreMessage = () => {
-        if(userAnswersScore >= 75) {
-            scoreParagraph.setAttribute('class', 'text-success');
-            scoreParagraph.textContent = `PARABÉNS!! Pontuação: ${userAnswersScore}!`;
-            button.insertAdjacentElement('beforebegin', scoreParagraph);
-            return;
+const showFinalScore = () => {
+    scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+        })
+    finalsScoreContainer.classList.remove('d-none');
+}
+
+const animateFinalScore = () => {
+    let counter = 0;
+    const timer = setInterval(() => {
+        
+        if(counter === userAnswersScore) {
+            clearInterval(timer);
         };
-        if(userAnswersScore >= 50) {
-            scoreParagraph.setAttribute('class', 'text-primary');
-            scoreParagraph.textContent = `MUITO BOM!! Pontuação: ${userAnswersScore}!`;
-            button.insertAdjacentElement('beforebegin', scoreParagraph);
-            return;
-        };
-        scoreParagraph.setAttribute('class', 'text-danger');
-        scoreParagraph.textContent = `TREINE MAIS!! Pontuação: ${userAnswersScore}!`;
-        button.insertAdjacentElement('beforebegin', scoreParagraph);
-    };
+        
+        finalsScoreContainer.querySelector('span').textContent = `${counter++}%`;           
+    }, 10);   
+}
 
-    printScoreMessage();
+form.addEventListener('submit', event => {
+    event.preventDefault();
 
-    userAnswersScore = 0;   
+    userAnswersScore = 0; 
+
+    userAnswers = getUserAnswers()
+    
+    calculateUserScore(userAnswers)    
+    showFinalScore()
+    animateFinalScore()     
 });
 

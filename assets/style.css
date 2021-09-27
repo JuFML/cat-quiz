@@ -3,7 +3,7 @@
 }
 
 .right-side {    
-    flex: 2
+    flex: 2;
 }
 
 .display-2 {
@@ -12,9 +12,9 @@
 
 .img-area {
     height: 700px;
-    padding: 10px;
-    background-color: #343a40; 
-    margin-right: 50px;   
+    padding: 7px;
+    margin-right: 50px;
+    display: flex;   
 }
 
 .container__title-area {
@@ -32,7 +32,7 @@
     margin-top: 30px;
     margin-left: 10px;
     z-index: 9;
-    display: none;
+    display: none;    
 }
 
 img {
